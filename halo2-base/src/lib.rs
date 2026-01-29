@@ -1,5 +1,3 @@
-#![feature(stmt_expr_attributes)]
-#![feature(trait_alias)]
 #![deny(clippy::perf)]
 #![allow(clippy::too_many_arguments)]
 
