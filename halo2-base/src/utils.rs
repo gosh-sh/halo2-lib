@@ -90,6 +90,9 @@ pub trait ScalarField: PrimeField + FromUniformBytes<64> + From<bool> + Hash + O
 #[cfg(feature = "halo2-pse")]
 pub trait BigPrimeField: PrimeField<Repr = [u8; 32]> + ScalarField {}
 
+#[cfg(feature = "halo2-pse")]
+impl<F> BigPrimeField for F where F: PrimeField<Repr = [u8; 32]> + ScalarField {}
+
 /// Converts an [Iterator] of u64 digits into `number_of_limbs` limbs of `bit_len` bits returned as a [Vec].
 ///
 /// Assumes: `bit_len < 64`.
@@ -378,7 +381,6 @@ impl<C: CurveAffine> CurveAffineExt for C {}
 mod scalar_field_impls {
     use super::{decompose_u64_digits_to_limbs, ScalarField};
     use crate::halo2_proofs::halo2curves::{
-        bls12_381::Scalar as blsScalar,
         bn256::{Fq as bn254Fq, Fr as bn254Fr},
         secp256k1::{Fp as secpk1Fp, Fq as secpk1Fq},
         secp256r1::{Fp as secpr1Fp, Fq as secpr1Fq},
@@ -450,7 +452,6 @@ mod scalar_field_impls {
     impl_scalar_field!(secpk1Fq);
     impl_scalar_field!(secpr1Fp);
     impl_scalar_field!(secpr1Fq);
-    impl_scalar_field!(blsScalar);
 }
 
 /// Module for reading parameters for Halo2 proving system from the file system.
